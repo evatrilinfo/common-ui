@@ -11,6 +11,7 @@ export const CityFilterProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedCity, cities, loading: citiesLoading } = useSelector((state) => state.city);
+  console.log("selected city and cities",selectedCity,cities)
 
   const [mockCities] = useState([
     { id: '123', name: 'Puri', slug: 'puri' },
