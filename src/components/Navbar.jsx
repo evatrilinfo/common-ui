@@ -891,15 +891,8 @@ const Navbar = () => {
 
   const tabs = [
     { name: 'Home', path: storedCity?.slug ? `https://evatril.com/${storedCity.slug}` : 'https://evatril.com', icon: <FaHome className='text-lg mb-1' /> },
-    {
-      name: 'Venue',
-      // Include city slug for venue subdomain
-      path: storedCity?.slug
-        ? `https://venue.evatril.com/${storedCity.slug}`
-        : 'https://venue.evatril.com',
-      icon: <MdEventSeat className='text-lg mb-1' />
-    },
-    { name: 'Menu', path: 'https://menu.evatril.com/', icon: <FaUtensils className='text-lg mb-1' /> },
+    { name: 'Venu', path: 'https://venue.evatril.com/', icon: <FaUtensils className='text-lg mb-1' /> },
+        { name: 'Menu', path: 'https://menu.evatril.com/', icon: <FaUtensils className='text-lg mb-1' /> },
     { name: "Invitation", icon: <FaEnvelopeOpenText className="text-lg mb-1" />, path: "https://curesoon.in" },
     { name: 'Profile', path: '/profilepage', icon: <FaUser className='text-xl mb-1' />, mobileOnly: true },
   ];
