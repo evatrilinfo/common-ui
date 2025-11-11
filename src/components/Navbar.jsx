@@ -1359,6 +1359,7 @@ import {
   FaGift,
   FaRegNewspaper
 } from "react-icons/fa";
+import { getCityCookie, setCityCookie } from '../store/Util/cookieUtils';
 
 const Navbar = () => {
   const {
@@ -1404,32 +1405,68 @@ const Navbar = () => {
     dispatch(fetchCities());
   }, [dispatch]);
 
+
   useEffect(() => {
     if (reduxCity) setStoredCity(reduxCity);
   }, [reduxCity]);
 
- useEffect(() => {
+//  useEffect(() => {
+//   if (!reduxCity) {
+//     try {
+//       const saved = localStorage.getItem('selectedCity');
+//       console.log("saveddd",saved)
+//       if (saved) {
+//         const parsed = JSON.parse(saved);
+//         console.log("parseddd",parsed)
+//         // Ensure it has the expected structure
+//         if (parsed && parsed.value) {
+//           setStoredCity(parsed.value);
+//         } else {
+//           console.warn('Invalid city data in localStorage:', parsed);
+//           localStorage.removeItem('selectedCity');
+//         }
+//       }
+//     } catch (err) {
+//       console.error('Failed to parse selectedCity from localStorage:', err);
+//       localStorage.removeItem('selectedCity');
+//     }
+//   }
+// }, [reduxCity]);
+
+useEffect(() => {
   if (!reduxCity) {
+    // 1️⃣ Try shared cookie first
+    const cookieCity = getCityCookie();
+    if (cookieCity && cookieCity.value) {
+      console.log("Found city from cookie:", cookieCity);
+      dispatch(setSelectedCity(cookieCity.value));
+      setStoredCity(cookieCity.value);
+      return;
+    }
+
+    // 2️⃣ Fallback to localStorage (for evatril.com only)
     try {
-      const saved = localStorage.getItem('selectedCity');
-      console.log("saveddd",saved)
+      const saved = localStorage.getItem("selectedCity");
       if (saved) {
         const parsed = JSON.parse(saved);
-
-        // Ensure it has the expected structure
         if (parsed && parsed.value) {
+          console.log("✅ Found city from localStorage:", parsed);
+          dispatch(setSelectedCity(parsed.value));
           setStoredCity(parsed.value);
+          // Also sync to cookie so subdomains can read it
+          setCityCookie(parsed);
         } else {
-          console.warn('Invalid city data in localStorage:', parsed);
-          localStorage.removeItem('selectedCity');
+          console.warn("Invalid city data in localStorage:", parsed);
+          localStorage.removeItem("selectedCity");
         }
       }
     } catch (err) {
-      console.error('Failed to parse selectedCity from localStorage:', err);
-      localStorage.removeItem('selectedCity');
+      console.error("Failed to parse selectedCity from localStorage:", err);
+      localStorage.removeItem("selectedCity");
     }
   }
-}, [reduxCity]);
+}, [reduxCity, dispatch]);
+
 
 
   // === DYNAMIC ACTIVE TAB & Z-INDEX LOGIC ===

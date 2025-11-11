@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useMemo } from "
 import { fetchCities, setSelectedCity } from '../store/Slices/CitySlice/citySlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from "react-router-dom";
+import { setCityCookie } from "../store/Util/cookieUtils";
 
 const CityFilterContext = createContext();
 
@@ -128,16 +129,24 @@ export const CityFilterProvider = ({ children }) => {
    
   // };
 
+//   const handleCitySelect = (city) => {
+//   dispatch(setSelectedCity(city));
+//   setCityCookie({ value: city, expiry: Date.now() + 30 * 24 * 60 * 60 * 1000 });
+//   localStorage.setItem('selectedCity', JSON.stringify({ value: city, expiry: Date.now() + 30 * 24 * 60 * 60 * 1000 }));
+//   setIsOpen(false);
+//   setShowLocationPopup(false);
+//   setDropdownSearchValue('');
+// };
   
   const handleCitySelect = (city) => {
   if (!city) return;
 
   // 1️⃣ Save city in Redux
   dispatch(setSelectedCity(city));
-
+    setCityCookie({ value: city, expiry: Date.now() + 30 * 24 * 60 * 60 * 1000 });
   // 2️⃣ Save city in localStorage (with optional expiry, e.g., 30 days)
-  // const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days in ms
-  const cityData = { value: city};
+  const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days in ms
+  const cityData = { value: city,expiry};
   console.log("city dataaaa",cityData)
   localStorage.setItem('selectedCity', JSON.stringify(cityData));
 
