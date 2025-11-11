@@ -377,7 +377,7 @@ const isDestinationPage=currentPath.includes('/destination-venues')
             setIsOpen={setIsOpen}
           />
 
-          <nav className="fixed top-0 left-0 w-full h-[55px] text-gray-700 font-bold text-[16px] sm:pl-2 flex md:hidden items-center shadow-sm md:px-10 lg:px-10 px-4 py-3.5 z-[99] bg-white backdrop-blur-md">
+          <nav className="fixed top-0 left-0 w-full h-[55px] text-gray-700 font-bold text-[16px] sm:pl-2 flex md:hidden items-center shadow-sm md:px-10 lg:px-10 px-4 py-3.5 z-[9999] bg-white backdrop-blur-md">
             <div
               onClick={() => setTimeout(handleBack, 150)}
               className="rounded-full active:bg-gray-300 transition duration-150 ease-in-out cursor-pointer"
