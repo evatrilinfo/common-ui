@@ -804,7 +804,7 @@ const Navbar = () => {
   const getZIndex = () => {
     const zMap = {
       'Home': '9',
-      'Venue': '10',
+      'Venue': '99',
       'Menu': '11',
       'Invitation': '12',
       'Profile': '13',
@@ -1241,7 +1241,7 @@ const Navbar = () => {
 
       {currentPath === '/catagoryCardDetails' && (
         <div
-          className={`fixed left-0 w-full bg-white border-t border-gray-200 shadow-md flex justify-around items-center md:hidden z-[98] h-[55px] transition-transform duration-300 ease-in-out ${showSortFilter ? 'translate-y-0' : 'translate-y-[60px]'}`}
+          className={`fixed left-0 w-full bg-white border-t border-gray-200 shadow-md flex justify-around items-center md:hidden z-[99] h-[55px] transition-transform duration-300 ease-in-out ${showSortFilter ? 'translate-y-0' : 'translate-y-[60px]'}`}
         >
           {sortFilterTabs.map((tab) => (
             <button
