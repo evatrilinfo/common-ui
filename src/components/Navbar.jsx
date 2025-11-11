@@ -802,32 +802,11 @@ const Navbar = () => {
   }, [reduxCity]);
 
   // === DYNAMIC ACTIVE TAB & Z-INDEX LOGIC ===
-  // useEffect(() => {
-  //   const hostname = window.location.hostname;
-  //   const pathname = location.pathname;
-
-  //   // Default to Home
-  //   let newActiveTab = 'Home';
-
-  //   if (hostname.includes('venue.evatril.com') || pathname.includes('/venue')) {
-  //     newActiveTab = 'Venue';
-  //   } else if (hostname.includes('menu.evatril.com') || pathname.includes('/menu')) {
-  //     newActiveTab = 'Menu';
-  //   } else if (hostname.includes('curesoon.in') || pathname.includes('/invitation')) {
-  //     newActiveTab = 'Invitation';
-  //   } else if (pathname.includes('/profilepage')) {
-  //     newActiveTab = 'Profile';
-  //   } else if (pathname === '/' || pathname === `/${storedCity?.slug}` || hostname === 'evatril.com' || hostname === 'localhost') {
-  //     newActiveTab = 'Home';
-  //   }
-
-  //   setActiveTab(newActiveTab);
-  // }, [location.pathname, storedCity]);
-
   useEffect(() => {
-    const hostname = window.location.hostname.toLowerCase();
+    const hostname = window.location.hostname;
     const pathname = location.pathname;
 
+    // Default to Home
     let newActiveTab = 'Home';
 
     if (hostname.includes('venue.evatril.com') || pathname.includes('/venue')) {
@@ -838,13 +817,14 @@ const Navbar = () => {
       newActiveTab = 'Invitation';
     } else if (pathname.includes('/profilepage')) {
       newActiveTab = 'Profile';
-    } else if (hostname === 'evatril.com' || hostname === 'localhost') {
+    } else if (pathname === '/' || pathname === `/${storedCity?.slug}` || hostname === 'evatril.com' || hostname === 'localhost') {
       newActiveTab = 'Home';
     }
 
     setActiveTab(newActiveTab);
   }, [location.pathname, storedCity]);
 
+  
 
   // Dynamic z-index based on active tab
   const getZIndex = () => {
