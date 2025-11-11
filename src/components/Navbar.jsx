@@ -1440,9 +1440,13 @@ const Navbar = () => {
       newActiveTab = 'Invitation';
     } else if (pathname.includes('/profilepage')) {
       newActiveTab = 'Profile';
-    } else if (pathname === '/' || pathname === `/${storedCity?.slug}` || hostname === 'evatril.com' || hostname === 'localhost') {
-      newActiveTab = 'Home';
-    }
+    } else if (
+    hostname === 'evatril.com' ||
+    hostname === 'www.evatril.com' ||
+    hostname === 'localhost'
+  ) {
+    newActiveTab = 'Home';
+  }
     setActiveTab(newActiveTab);
   }, [location.pathname, storedCity]);
  
@@ -1526,22 +1530,21 @@ const Navbar = () => {
   );
 
   // MODIFIED: Home tab always goes to https://evatril.com (no city slug)
-  const handleTabClick = (tab) => {
-    setActiveTab(tab.name);
-    console.log("tabs name", tab.name);
+const handleTabClick = (tab) => {
+  setActiveTab(tab.name);
 
-    if (tab.name === 'Home') {
-      // Always redirect to root domain without city
-      window.location.assign('https://evatril.com');
-    } else if (tab.path?.startsWith('http')) {
-      // Cross-domain navigation
-      window.location.assign(tab.path);
-    } else {
-      // Internal navigation
-      navigate(tab.path);
-    }
-    setIsMobileMenuOpen(false);
-  };
+  if (tab.name === 'Home') {
+    window.location.assign('https://evatril.com');
+    return;
+  }
+
+  if (tab.path?.startsWith('http')) {
+    window.location.assign(tab.path);
+  } else {
+    navigate(tab.path);
+  }
+  setIsMobileMenuOpen(false);
+};
 
   const handleSortFilterClick = (name) => {
     setActiveTab(name);
