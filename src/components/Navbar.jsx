@@ -901,15 +901,27 @@ useEffect(() => {
     item.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  // const handleTabClick = (tab) => {
+  //   setActiveTab(tab.name);
+  //   if (tab.path?.startsWith('http')) {
+  //     window.location.assign(tab.path);
+  //   } else {
+  //     navigate(tab.path);
+  //   }
+  //   setIsMobileMenuOpen(false);
+  // };
+
   const handleTabClick = (tab) => {
-    setActiveTab(tab.name);
-    if (tab.path?.startsWith('http')) {
-      window.location.assign(tab.path);
-    } else {
-      navigate(tab.path);
-    }
-    setIsMobileMenuOpen(false);
-  };
+  setActiveTab(tab.name);
+  if (tab.path?.startsWith('http') && !tab.path.includes(window.location.hostname)) {
+    // navigate outside domain
+    window.location.href = tab.path;
+  } else {
+    navigate(tab.path);
+  }
+  setIsMobileMenuOpen(false);
+};
+
 
   const handleSortFilterClick = (name) => {
     setActiveTab(name);
