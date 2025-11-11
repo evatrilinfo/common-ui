@@ -377,7 +377,7 @@ const isDestinationPage=currentPath.includes('/destination-venues')
             setIsOpen={setIsOpen}
           />
 
-          <nav className="fixed top-0 left-0 w-full h-[55px] text-gray-700 font-bold text-[16px] sm:pl-2 flex md:hidden items-center shadow-sm md:px-10 lg:px-10 px-4 py-3.5 z-[9999] bg-white backdrop-blur-md">
+          <nav className="fixed top-0 left-0 w-full h-[55px] text-gray-700 font-bold text-[16px] sm:pl-2 flex md:hidden items-center shadow-sm md:px-10 lg:px-10 px-4 py-3.5 z-[9] bg-white backdrop-blur-md">
             <div
               onClick={() => setTimeout(handleBack, 150)}
               className="rounded-full active:bg-gray-300 transition duration-150 ease-in-out cursor-pointer"
@@ -425,7 +425,7 @@ const isDestinationPage=currentPath.includes('/destination-venues')
         </>
       ) : (
 
-        <nav className="fixed top-0 left-0 w-full h-[55px] md:h-[65px] flex space-x-0 items-center shadow-sm md:px-6 lg:px-10 px-3 py-3 z-[9999] bg-white backdrop-blur-md">
+        <nav className="fixed top-0 left-0 w-full h-[55px] md:h-[65px] flex space-x-0 items-center shadow-sm md:px-6 lg:px-10 px-3 py-3 z-[9] bg-white backdrop-blur-md">
           <div className="flex items-center w-full justify-between md:justify-between">
             <div className="flex w-[34%] md:w-[60%] md:gap-6 lg:gap-12 xl:gap-12 2xl:gap-14">
               <Link to={storedCity ? `/${storedCity.slug}` : '/'}>
