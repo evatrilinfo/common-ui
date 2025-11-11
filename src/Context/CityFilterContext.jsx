@@ -84,6 +84,7 @@ export const CityFilterProvider = ({ children }) => {
   //   let basePath = currentPath;
   //   if (pathSegments[0] && cities.some(c => c.slug === pathSegments[0])) {
   //     basePath = `/${pathSegments.slice(1).join('/')}`;
+  //     console.log("base path",basePath)
   //   }
 
   //   const cityRoutes = [
@@ -154,6 +155,7 @@ export const CityFilterProvider = ({ children }) => {
   let basePath = currentPath;
   if (pathSegments[0] && cities.some(c => c.slug === pathSegments[0])) {
     basePath = `/${pathSegments.slice(1).join('/')}`;
+      console.log("base pathh",basePath)
   }
 
   const cityRoutes = [
