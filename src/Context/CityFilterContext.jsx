@@ -136,8 +136,8 @@ export const CityFilterProvider = ({ children }) => {
   dispatch(setSelectedCity(city));
 
   // 2️⃣ Save city in localStorage (with optional expiry, e.g., 30 days)
-  const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days in ms
-  const cityData = { value: city, expiry };
+  // const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days in ms
+  const cityData = { value: city};
   console.log("city dataaaa",cityData)
   localStorage.setItem('selectedCity', JSON.stringify(cityData));
 

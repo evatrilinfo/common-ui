@@ -1408,23 +1408,29 @@ const Navbar = () => {
     if (reduxCity) setStoredCity(reduxCity);
   }, [reduxCity]);
 
-  useEffect(() => {
-    if (!reduxCity) {
-      try {
-        const saved = localStorage.getItem('selectedCity');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed.expiry && parsed.expiry > Date.now()) {
-            setStoredCity(parsed.value);
-          } else {
-            localStorage.removeItem('selectedCity'); // expired
-          }
+ useEffect(() => {
+  if (!reduxCity) {
+    try {
+      const saved = localStorage.getItem('selectedCity');
+      console.log("saveddd",saved)
+      if (saved) {
+        const parsed = JSON.parse(saved);
+
+        // Ensure it has the expected structure
+        if (parsed && parsed.value) {
+          setStoredCity(parsed.value);
+        } else {
+          console.warn('Invalid city data in localStorage:', parsed);
+          localStorage.removeItem('selectedCity');
         }
-      } catch (err) {
-        console.error('Invalid city data in localStorage:', err);
       }
+    } catch (err) {
+      console.error('Failed to parse selectedCity from localStorage:', err);
+      localStorage.removeItem('selectedCity');
     }
-  }, [reduxCity]);
+  }
+}, [reduxCity]);
+
 
   // === DYNAMIC ACTIVE TAB & Z-INDEX LOGIC ===
   useEffect(() => {
