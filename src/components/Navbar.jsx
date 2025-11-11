@@ -168,7 +168,7 @@
 //   const slug = useParams()
 //   const location = useLocation();
 //   const currentPath = location.pathname.replace(/\/+$/, '');
-  
+
 
 //   console.log("citiessss", cities)
 
@@ -758,8 +758,8 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const reduxCity  = useSelector((state) => state.city.selectedCity);
-  console.log("redux cityyyy",cities)
+  const reduxCity = useSelector((state) => state.city.selectedCity);
+  console.log("redux cityyyy", cities)
   const [storedCity, setStoredCity] = useState(reduxCity);
   const [showSortFilter, setShowSortFilter] = useState(false);
   const lastScrollY = useRef(0);
@@ -780,26 +780,26 @@ const Navbar = () => {
   }, [dispatch]);
 
   useEffect(() => {
-  if (reduxCity) setStoredCity(reduxCity);
-}, [reduxCity]);
+    if (reduxCity) setStoredCity(reduxCity);
+  }, [reduxCity]);
 
-useEffect(() => {
-  if (!reduxCity) {
-    try {
-      const saved = localStorage.getItem('selectedCity');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.expiry && parsed.expiry > Date.now()) {
-          setStoredCity(parsed.value);
-        } else {
-          localStorage.removeItem('selectedCity'); // expired
+  useEffect(() => {
+    if (!reduxCity) {
+      try {
+        const saved = localStorage.getItem('selectedCity');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.expiry && parsed.expiry > Date.now()) {
+            setStoredCity(parsed.value);
+          } else {
+            localStorage.removeItem('selectedCity'); // expired
+          }
         }
+      } catch (err) {
+        console.error('Invalid city data in localStorage:', err);
       }
-    } catch (err) {
-      console.error('Invalid city data in localStorage:', err);
     }
-  }
-}, [reduxCity]);
+  }, [reduxCity]);
 
   // === DYNAMIC ACTIVE TAB & Z-INDEX LOGIC ===
   // useEffect(() => {
@@ -825,25 +825,25 @@ useEffect(() => {
   // }, [location.pathname, storedCity]);
 
   useEffect(() => {
-  const hostname = window.location.hostname.toLowerCase();
-  const pathname = location.pathname;
+    const hostname = window.location.hostname.toLowerCase();
+    const pathname = location.pathname;
 
-  let newActiveTab = 'Home';
+    let newActiveTab = 'Home';
 
-  if (hostname.includes('venue.evatril.com') || pathname.includes('/venue')) {
-    newActiveTab = 'Venue';
-  } else if (hostname.includes('menu.evatril.com') || pathname.includes('/menu')) {
-    newActiveTab = 'Menu';
-  } else if (hostname.includes('curesoon.in') || pathname.includes('/invitation')) {
-    newActiveTab = 'Invitation';
-  } else if (pathname.includes('/profilepage')) {
-    newActiveTab = 'Profile';
-  } else if (hostname === 'evatril.com' || hostname === 'localhost') {
-    newActiveTab = 'Home';
-  }
+    if (hostname.includes('venue.evatril.com') || pathname.includes('/venue')) {
+      newActiveTab = 'Venue';
+    } else if (hostname.includes('menu.evatril.com') || pathname.includes('/menu')) {
+      newActiveTab = 'Menu';
+    } else if (hostname.includes('curesoon.in') || pathname.includes('/invitation')) {
+      newActiveTab = 'Invitation';
+    } else if (pathname.includes('/profilepage')) {
+      newActiveTab = 'Profile';
+    } else if (hostname === 'evatril.com' || hostname === 'localhost') {
+      newActiveTab = 'Home';
+    }
 
-  setActiveTab(newActiveTab);
-}, [location.pathname, storedCity]);
+    setActiveTab(newActiveTab);
+  }, [location.pathname, storedCity]);
 
 
   // Dynamic z-index based on active tab
@@ -887,10 +887,18 @@ useEffect(() => {
       document.body.style.overflow = '';
     };
   }, [isOpen, isMobileMenuOpen, showLocationPopup, showSearchInput]);
+  console.log("stored city slugg", storedCity)
 
   const tabs = [
     { name: 'Home', path: storedCity?.slug ? `https://evatril.com/${storedCity.slug}` : 'https://evatril.com', icon: <FaHome className='text-lg mb-1' /> },
-    { name: 'Venue', path: 'https://venue.evatril.com', icon: <MdEventSeat className='text-lg mb-1' /> },
+    {
+      name: 'Venue',
+      // Include city slug for venue subdomain
+      path: storedCity?.slug
+        ? `https://venue.evatril.com/${storedCity.slug}`
+        : 'https://venue.evatril.com',
+      icon: <MdEventSeat className='text-lg mb-1' />
+    },
     { name: 'Menu', path: 'https://menu.evatril.com/', icon: <FaUtensils className='text-lg mb-1' /> },
     { name: "Invitation", icon: <FaEnvelopeOpenText className="text-lg mb-1" />, path: "https://curesoon.in" },
     { name: 'Profile', path: '/profilepage', icon: <FaUser className='text-xl mb-1' />, mobileOnly: true },
@@ -923,10 +931,12 @@ useEffect(() => {
     item.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
+
   // const handleTabClick = (tab) => {
   //   setActiveTab(tab.name);
   //   if (tab.path?.startsWith('http')) {
-  //     window.location.assign(tab.path);
+  //     // navigate outside domain
+  //     window.location.href = tab.path;
   //   } else {
   //     navigate(tab.path);
   //   }
@@ -935,12 +945,21 @@ useEffect(() => {
 
   const handleTabClick = (tab) => {
   setActiveTab(tab.name);
-  if (tab.path?.startsWith('http')) {
-    // navigate outside domain
+  
+  if (tab.name === 'Home') {
+    // Special handling for Home navigation
+    const homeUrl = storedCity?.slug 
+      ? `https://evatril.com/${storedCity.slug}` 
+      : 'https://evatril.com';
+    window.location.href = homeUrl;
+  } else if (tab.path?.startsWith('http')) {
+    // Cross-domain navigation
     window.location.href = tab.path;
   } else {
+    // Same-domain navigation
     navigate(tab.path);
   }
+  
   setIsMobileMenuOpen(false);
 };
 
@@ -1078,10 +1097,10 @@ useEffect(() => {
                       :
                       currentPath === '/profilepage' ? ` Hi ${user}` :
                         isCheckout ? 'Checkout' :
-                        isDestinationPage ? 'Destination Wedding' :
-                          currentPath === '/venues' || ':city/venues' ? `Venues` :
-                            currentPath === '/locationpage' ? (selectedCity?.name || 'Location') :
-                              ''}
+                          isDestinationPage ? 'Destination Wedding' :
+                            currentPath === '/venues' || ':city/venues' ? `Venues` :
+                              currentPath === '/locationpage' ? (selectedCity?.name || 'Location') :
+                                ''}
             </p>
           </nav>
         </>
