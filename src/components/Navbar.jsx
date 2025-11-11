@@ -109,7 +109,7 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { FiX } from "react-icons/fi";
 import SearchPopup from './SearchPopup';
 import LocationPopup from '../components/LocationPopup';
-// import NavComponent from './NavComponent';
+import NavComponent from './NavComponent';
 import { matchPath } from 'react-router-dom';
 import { MdLocationOn, MdLocationCity } from 'react-icons/md';
 import { RxCross2 } from "react-icons/rx";
