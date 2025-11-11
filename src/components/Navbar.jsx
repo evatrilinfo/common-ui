@@ -682,7 +682,7 @@ const isDestinationPage=currentPath.includes('/destination-venues')
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-md flex justify-around items-center md:hidden z-[98] h-[60px]">
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-md flex justify-around items-center md:hidden z-[9] h-[60px]">
         {tabs.map((tab) => (
           <button
             key={tab.name}
