@@ -425,7 +425,7 @@ const isDestinationPage=currentPath.includes('/destination-venues')
         </>
       ) : (
 
-        <nav className="fixed top-0 left-0 w-full h-[55px] md:h-[65px] flex space-x-0 items-center shadow-sm md:px-6 lg:px-10 px-3 py-3 z-[99] bg-white backdrop-blur-md">
+        <nav className="fixed top-0 left-0 w-full h-[55px] md:h-[65px] flex space-x-0 items-center shadow-sm md:px-6 lg:px-10 px-3 py-3 z-[9999] bg-white backdrop-blur-md">
           <div className="flex items-center w-full justify-between md:justify-between">
             <div className="flex w-[34%] md:w-[60%] md:gap-6 lg:gap-12 xl:gap-12 2xl:gap-14">
               <Link to={storedCity ? `/${storedCity.slug}` : '/'}>
