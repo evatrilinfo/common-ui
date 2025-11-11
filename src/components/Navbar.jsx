@@ -758,7 +758,9 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const storedCity = useSelector((state) => state.city.selectedCity);
+  const reduxCity  = useSelector((state) => state.city.selectedCity);
+  console.log("redux cityyyy",cities)
+  const [storedCity, setStoredCity] = useState(reduxCity);
   const [showSortFilter, setShowSortFilter] = useState(false);
   const lastScrollY = useRef(0);
   const dropdownRef = useRef(null);
@@ -776,6 +778,28 @@ const Navbar = () => {
   useEffect(() => {
     dispatch(fetchCities());
   }, [dispatch]);
+
+  useEffect(() => {
+  if (reduxCity) setStoredCity(reduxCity);
+}, [reduxCity]);
+
+useEffect(() => {
+  if (!reduxCity) {
+    try {
+      const saved = localStorage.getItem('selectedCity');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.expiry && parsed.expiry > Date.now()) {
+          setStoredCity(parsed.value);
+        } else {
+          localStorage.removeItem('selectedCity'); // expired
+        }
+      }
+    } catch (err) {
+      console.error('Invalid city data in localStorage:', err);
+    }
+  }
+}, [reduxCity]);
 
   // === DYNAMIC ACTIVE TAB & Z-INDEX LOGIC ===
   useEffect(() => {
@@ -843,7 +867,7 @@ const Navbar = () => {
   }, [isOpen, isMobileMenuOpen, showLocationPopup, showSearchInput]);
 
   const tabs = [
-    { name: 'Home', path: storedCity ? `https://evatril.com/${storedCity.slug}` : 'https://evatril.com', icon: <FaHome className='text-lg mb-1' /> },
+    { name: 'Home', path: storedCity?.slug ? `https://evatril.com/${storedCity.slug}` : 'https://evatril.com', icon: <FaHome className='text-lg mb-1' /> },
     { name: 'Venue', path: 'https://venue.evatril.com', icon: <MdEventSeat className='text-lg mb-1' /> },
     { name: 'Menu', path: 'https://menu.evatril.com/', icon: <FaUtensils className='text-lg mb-1' /> },
     { name: "Invitation", icon: <FaEnvelopeOpenText className="text-lg mb-1" />, path: "https://curesoon.in" },

@@ -68,66 +68,126 @@ export const CityFilterProvider = ({ children }) => {
     }
   }, [location.pathname, location.search, cities, selectedCity, dispatch]);
 
-  const handleCitySelect = (city) => {
+  // const handleCitySelect = (city) => {
      
-    dispatch(setSelectedCity(city));
-    setIsOpen(false);
-    setShowLocationPopup(false);
-    setDropdownSearchValue('');
+  //   dispatch(setSelectedCity(city));
+  //   setIsOpen(false);
+  //   setShowLocationPopup(false);
+  //   setDropdownSearchValue('');
     
 
-    const currentPath = location.pathname;
-    const searchParams = new URLSearchParams(location.search);
-    let newPath;
+  //   const currentPath = location.pathname;
+  //   const searchParams = new URLSearchParams(location.search);
+  //   let newPath;
 
-    const pathSegments = currentPath.split('/').filter(Boolean);
-    let basePath = currentPath;
-    if (pathSegments[0] && cities.some(c => c.slug === pathSegments[0])) {
-      basePath = `/${pathSegments.slice(1).join('/')}`;
-    }
+  //   const pathSegments = currentPath.split('/').filter(Boolean);
+  //   let basePath = currentPath;
+  //   if (pathSegments[0] && cities.some(c => c.slug === pathSegments[0])) {
+  //     basePath = `/${pathSegments.slice(1).join('/')}`;
+  //   }
 
-    const cityRoutes = [
-      'venues',
-      'venuedetails',
-      'subnavcards',
-      'catagoryCardDetails',
-      'cardDetails',
-      'profilepage',
-      'checkout',
-      'locationpage',
-      'notification',
-      'reviews',
-      'popular',
-      'confirmation',
-    ];
+  //   const cityRoutes = [
+  //     'venues',
+  //     'venuedetails',
+  //     'subnavcards',
+  //     'catagoryCardDetails',
+  //     'cardDetails',
+  //     'profilepage',
+  //     'checkout',
+  //     'locationpage',
+  //     'notification',
+  //     'reviews',
+  //     'popular',
+  //     'confirmation',
+  //   ];
 
-    if (basePath.startsWith('/bookinglist') || basePath.startsWith('/booking/bookingdetails')) {
-      if (city && city.id) {
-        searchParams.set('city', city.slug);
-      } else {
-        searchParams.delete('city');
-      }
-      newPath = `${basePath}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
-    } else if (cityRoutes.some(route => basePath.includes(route)) || basePath === '/') {
-      newPath = city && city.id ? `/${city.slug}${basePath === '/' ? '' : basePath}` : basePath;
-      searchParams.delete('city');
-      if (searchParams.toString()) {
-        newPath += `?${searchParams.toString()}`;
-      }
-    } else {
-      newPath = city && city.id ? `/${city.slug}` : '/';
-      searchParams.delete('city');
-      if (searchParams.toString()) {
-        newPath += `?${searchParams.toString()}`;
-      }
-    }
+  //   if (basePath.startsWith('/bookinglist') || basePath.startsWith('/booking/bookingdetails')) {
+  //     if (city && city.id) {
+  //       searchParams.set('city', city.slug);
+  //     } else {
+  //       searchParams.delete('city');
+  //     }
+  //     newPath = `${basePath}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+  //   } else if (cityRoutes.some(route => basePath.includes(route)) || basePath === '/') {
+  //     newPath = city && city.id ? `/${city.slug}${basePath === '/' ? '' : basePath}` : basePath;
+  //     searchParams.delete('city');
+  //     if (searchParams.toString()) {
+  //       newPath += `?${searchParams.toString()}`;
+  //     }
+  //   } else {
+  //     newPath = city && city.id ? `/${city.slug}` : '/';
+  //     searchParams.delete('city');
+  //     if (searchParams.toString()) {
+  //       newPath += `?${searchParams.toString()}`;
+  //     }
+  //   }
 
-    navigate(newPath, { replace: true });
-     setClearFilter(true)
+  //   navigate(newPath, { replace: true });
+  //    setClearFilter(true)
    
-  };
+  // };
 
   
+  const handleCitySelect = (city) => {
+  if (!city) return;
+
+  // 1️⃣ Save city in Redux
+  dispatch(setSelectedCity(city));
+
+  // 2️⃣ Save city in localStorage (with optional expiry, e.g., 30 days)
+  const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days in ms
+  const cityData = { value: city, expiry };
+  console.log("city dataaaa",cityData)
+  localStorage.setItem('selectedCity', JSON.stringify(cityData));
+
+  // 3️⃣ Close dropdowns & reset search
+  setIsOpen(false);
+  setShowLocationPopup(false);
+  setDropdownSearchValue('');
+
+  // 4️⃣ Your existing navigation logic
+  const currentPath = location.pathname;
+  const searchParams = new URLSearchParams(location.search);
+  let newPath;
+
+  const pathSegments = currentPath.split('/').filter(Boolean);
+  let basePath = currentPath;
+  if (pathSegments[0] && cities.some(c => c.slug === pathSegments[0])) {
+    basePath = `/${pathSegments.slice(1).join('/')}`;
+  }
+
+  const cityRoutes = [
+    'venues', 'venuedetails', 'subnavcards', 'catagoryCardDetails', 'cardDetails',
+    'profilepage', 'checkout', 'locationpage', 'notification', 'reviews',
+    'popular', 'confirmation',
+  ];
+
+  if (basePath.startsWith('/bookinglist') || basePath.startsWith('/booking/bookingdetails')) {
+    if (city && city.id) {
+      searchParams.set('city', city.slug);
+    } else {
+      searchParams.delete('city');
+    }
+    newPath = `${basePath}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+  } else if (cityRoutes.some(route => basePath.includes(route)) || basePath === '/') {
+    newPath = city && city.id ? `/${city.slug}${basePath === '/' ? '' : basePath}` : basePath;
+    searchParams.delete('city');
+    if (searchParams.toString()) {
+      newPath += `?${searchParams.toString()}`;
+    }
+  } else {
+    newPath = city && city.id ? `/${city.slug}` : '/';
+    searchParams.delete('city');
+    if (searchParams.toString()) {
+      newPath += `?${searchParams.toString()}`;
+    }
+  }
+
+  navigate(newPath, { replace: true });
+  setClearFilter(true);
+};
+
+
 
   return (
     <CityFilterContext.Provider
