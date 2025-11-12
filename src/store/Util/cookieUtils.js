@@ -3,12 +3,13 @@ export const COOKIE_NAME = "selectedCity";
 const DEFAULT_DAYS = 30;
 
 export function setCityCookie(cityData, days = DEFAULT_DAYS) {
+  console.log("city dataas",cityData)
   try {
     const encoded = encodeURIComponent(JSON.stringify(cityData));
     const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
     // If you're using HTTPS and want cross-site usage ensure SameSite=None; Secure
     document.cookie = `${COOKIE_NAME}=${encoded}; path=/; domain=.evatril.com; expires=${expires}; SameSite=None; Secure`;
-  } catch (e) {
+    } catch (e) {
     console.error("setCityCookie error:", e);
   }
 }
